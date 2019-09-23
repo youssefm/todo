@@ -14,6 +14,14 @@ TODOS = [
 def list_todos():
     return jsonify(TODOS)
 
+@app.route('/api/todo', methods=['POST'])
+def new_todo():
+    new_todo = request.get_json()
+    new_todo['id'] = max([todo['id'] for todo in TODOS]) + 1
+    new_todo['completed'] = False
+    TODOS.append(new_todo)
+    return jsonify(new_todo)
+
 
 @app.route('/api/todo/<id>', methods=['PUT'])
 def update_todo(id):
