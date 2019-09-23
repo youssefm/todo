@@ -73,12 +73,23 @@ export default class TodoList extends Component<{}, TodoListState> {
     });
   }
 
+  handleItemDelete(item: Todo): void {
+    this.setState(state => {
+      return {
+        todos: state.todos.filter(todo => todo.id != item.id)
+      };
+    });
+
+    fetch(`/api/todo/${item.id}`, { method: "DELETE" });
+  }
+
   render(): ReactNode {
     const todoItems = this.state.todos.map(item => (
       <TodoItem
         key={item.id}
         todo={item}
         handleToggle={this.handleItemToggle.bind(this, item)}
+        handleDelete={this.handleItemDelete.bind(this, item)}
       ></TodoItem>
     ));
     return (
