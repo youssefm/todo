@@ -49,8 +49,8 @@ export default class TodoList extends Component<{}, TodoListState> {
     });
   };
 
-  onSetCompletion(item: Todo, completed: boolean): void {
-    const updatedItem = _.extend({}, item, { completed });
+  handleItemToggle(item: Todo): void {
+    const updatedItem = _.extend({}, item, { completed: !item.completed });
     this.setState(state => {
       return {
         todos: state.todos.map(todo => {
@@ -63,6 +63,7 @@ export default class TodoList extends Component<{}, TodoListState> {
       };
     });
 
+    // We don't wait for the server update to happen to keep the frontend feeling snappy
     fetch(`/api/todo/${item.id}`, {
       method: "PUT",
       body: JSON.stringify(updatedItem),
@@ -77,7 +78,7 @@ export default class TodoList extends Component<{}, TodoListState> {
       <TodoItem
         key={item.id}
         todo={item}
-        onSetCompletion={this.onSetCompletion.bind(this, item)}
+        handleToggle={this.handleItemToggle.bind(this, item)}
       ></TodoItem>
     ));
     return (

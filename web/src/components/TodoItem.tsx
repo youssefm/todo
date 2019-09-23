@@ -9,7 +9,7 @@ import { Todo } from "../models";
 
 interface TodoItemProps {
   todo: Todo;
-  onSetCompletion: (completed: boolean) => void;
+  handleToggle: () => void;
 }
 
 export default class TodoItem extends Component<TodoItemProps, {}> {
@@ -24,13 +24,10 @@ export default class TodoItem extends Component<TodoItemProps, {}> {
   render(): ReactNode {
     const todo = this.props.todo;
     return (
-      <ListItem>
+      <ListItem onClick={this.props.handleToggle} button disableRipple>
         <ListItemIcon>
           <Checkbox
             checked={todo.completed}
-            onChange={(event): void =>
-              this.props.onSetCompletion(event.target.checked)
-            }
             edge="start"
             color="primary"
             disableRipple
