@@ -9,10 +9,18 @@ import { Todo } from "../models";
 
 interface TodoItemProps {
   todo: Todo;
-  onToggle: () => void;
+  onSetCompletion: (completed: boolean) => void;
 }
 
 export default class TodoItem extends Component<TodoItemProps, {}> {
+  getTextStyle = (): object => {
+    if (this.props.todo.completed) {
+      return { textDecoration: "line-through" };
+    } else {
+      return {};
+    }
+  };
+
   render(): ReactNode {
     const todo = this.props.todo;
     return (
@@ -20,13 +28,15 @@ export default class TodoItem extends Component<TodoItemProps, {}> {
         <ListItemIcon>
           <Checkbox
             checked={todo.completed}
-            onChange={this.props.onToggle}
+            onChange={(event): void =>
+              this.props.onSetCompletion(event.target.checked)
+            }
             edge="start"
             color="primary"
             disableRipple
           />
         </ListItemIcon>
-        <ListItemText primary={todo.title} />
+        <ListItemText primary={todo.title} style={this.getTextStyle()} />
       </ListItem>
     );
   }

@@ -20,17 +20,26 @@ export default class TodoList extends Component<{}, TodoListState> {
     });
   }
 
-  onToggle(item: Todo): void {
+  onSetCompletion(item: Todo, completed: boolean): void {
+    const updatedItem = _.extend({}, item, { completed });
     this.setState(state => {
       return {
         todos: state.todos.map(todo => {
           if (todo == item) {
-            return _.extend({}, todo, { completed: !todo.completed });
+            return updatedItem;
           } else {
             return todo;
           }
         })
       };
+    });
+
+    fetch(`/api/todo/${item.id}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedItem),
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
   }
 
@@ -39,12 +48,12 @@ export default class TodoList extends Component<{}, TodoListState> {
       <TodoItem
         key={item.id}
         todo={item}
-        onToggle={this.onToggle.bind(this, item)}
+        onSetCompletion={this.onSetCompletion.bind(this, item)}
       ></TodoItem>
     ));
     return (
       <Container>
-        <Typography variant="h2">ToDo List</Typography>
+        <Typography variant="h2">todos</Typography>
         <List>{todoItems}</List>
       </Container>
     );
