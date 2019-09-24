@@ -8,17 +8,40 @@ import {
   ListItemSecondaryAction,
   IconButton
 } from "@material-ui/core";
+import red from "@material-ui/core/colors/red";
 import DeleteIcon from "@material-ui/icons/Delete";
 
-const StyledListItemText = styled(ListItemText)`
-  text-decoration: ${props => (props.crossed ? "line-through" : "initial")};
+const StyledListItem = styled(ListItem)`
+  .MuiListItemText-root {
+    text-decoration: ${props => (props.crossed ? "line-through" : "initial")};
+  }
+  &:hover + .MuiListItemSecondaryAction-root {
+    visibility: visible;
+  }
+  & + .MuiListItemSecondaryAction-root {
+    visibility: hidden;
+
+    .MuiSvgIcon-root {
+      color: ${red[900]};
+    }
+
+    &:hover {
+      visibility: visible;
+    }
+  }
 `;
 
 export default class TodoItem extends React.Component {
   render() {
     const todo = this.props.todo;
     return (
-      <ListItem onClick={this.props.handleToggle} button disableRipple>
+      <StyledListItem
+        onClick={this.props.handleToggle}
+        button
+        disableRipple
+        crossed={todo.completed ? 1 : 0}
+        className="hehehe"
+      >
         <ListItemIcon>
           <Checkbox
             checked={todo.completed}
@@ -27,13 +50,13 @@ export default class TodoItem extends React.Component {
             disableRipple
           />
         </ListItemIcon>
-        <StyledListItemText primary={todo.title} crossed={todo.completed} />
+        <ListItemText primary={todo.title} />
         <ListItemSecondaryAction>
           <IconButton onClick={this.props.handleDelete} edge="end">
             <DeleteIcon />
           </IconButton>
         </ListItemSecondaryAction>
-      </ListItem>
+      </StyledListItem>
     );
   }
 }
