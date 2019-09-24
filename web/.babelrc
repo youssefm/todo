@@ -1,12 +1,9 @@
 {
-  "presets": [
-    "@babel/env",
-    "@babel/typescript",
-    "@babel/react"
-  ],
+  "presets": ["@babel/env", "@babel/react"],
   "plugins": [
     "@babel/plugin-transform-runtime",
     "@babel/proposal-class-properties",
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    "babel-plugin-styled-components"
   ]
 }

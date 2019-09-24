@@ -1,36 +1,28 @@
-import React, { ReactNode, Component, FormEvent, ChangeEvent } from "react";
-import { Todo } from "../models";
+import React from "react";
 import _ from "lodash";
 import TodoItem from "./TodoItem";
 import { Typography, Container, List, TextField, Box } from "@material-ui/core";
 
-interface TodoListState {
-  todos: Todo[];
-  newTodoTitle: string;
-}
-
-export default class TodoList extends Component<{}, TodoListState> {
-  state: TodoListState = {
+export default class TodoList extends React.Component {
+  state = {
     todos: [],
     newTodoTitle: ""
   };
 
-  async componentDidMount(): Promise<void> {
+  async componentDidMount() {
     const response = await fetch("/api/todo");
     this.setState({
       todos: await response.json()
     });
   }
 
-  onChangeNewTodoTitle = (event: ChangeEvent<HTMLInputElement>): void => {
+  onChangeNewTodoTitle = event => {
     this.setState({
       newTodoTitle: event.target.value
     });
   };
 
-  handleNewTodoSubmit = async (
-    event: FormEvent<HTMLFormElement>
-  ): Promise<void> => {
+  handleNewTodoSubmit = async event => {
     event.preventDefault();
     const newItem = { title: this.state.newTodoTitle };
     const response = await fetch("/api/todo", {
@@ -49,7 +41,7 @@ export default class TodoList extends Component<{}, TodoListState> {
     });
   };
 
-  handleItemToggle(item: Todo): void {
+  handleItemToggle(item) {
     const updatedItem = _.extend({}, item, { completed: !item.completed });
     this.setState(state => {
       return {
@@ -73,7 +65,7 @@ export default class TodoList extends Component<{}, TodoListState> {
     });
   }
 
-  handleItemDelete(item: Todo): void {
+  handleItemDelete(item) {
     this.setState(state => {
       return {
         todos: state.todos.filter(todo => todo.id != item.id)
@@ -83,7 +75,7 @@ export default class TodoList extends Component<{}, TodoListState> {
     fetch(`/api/todo/${item.id}`, { method: "DELETE" });
   }
 
-  render(): ReactNode {
+  render() {
     const todoItems = this.state.todos.map(item => (
       <TodoItem
         key={item.id}

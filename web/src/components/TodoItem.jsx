@@ -1,4 +1,5 @@
-import React, { ReactNode, Component } from "react";
+import React from "react";
+import styled from "styled-components";
 import {
   Checkbox,
   ListItem,
@@ -8,24 +9,13 @@ import {
   IconButton
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { Todo } from "../models";
 
-interface TodoItemProps {
-  todo: Todo;
-  handleToggle: () => void;
-  handleDelete: () => void;
-}
+const StyledListItemText = styled(ListItemText)`
+  text-decoration: ${props => (props.crossed ? "line-through" : "initial")};
+`;
 
-export default class TodoItem extends Component<TodoItemProps, {}> {
-  getTextStyle = (): object => {
-    if (this.props.todo.completed) {
-      return { textDecoration: "line-through" };
-    } else {
-      return {};
-    }
-  };
-
-  render(): ReactNode {
+export default class TodoItem extends React.Component {
+  render() {
     const todo = this.props.todo;
     return (
       <ListItem onClick={this.props.handleToggle} button disableRipple>
@@ -37,7 +27,7 @@ export default class TodoItem extends Component<TodoItemProps, {}> {
             disableRipple
           />
         </ListItemIcon>
-        <ListItemText primary={todo.title} style={this.getTextStyle()} />
+        <StyledListItemText primary={todo.title} crossed={todo.completed} />
         <ListItemSecondaryAction>
           <IconButton onClick={this.props.handleDelete} edge="end">
             <DeleteIcon />
