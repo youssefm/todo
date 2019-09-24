@@ -40,7 +40,6 @@ export default class TodoItem extends React.Component {
         button
         disableRipple
         crossed={todo.completed ? 1 : 0}
-        className="hehehe"
       >
         <ListItemIcon>
           <Checkbox
