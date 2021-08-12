@@ -1,7 +1,12 @@
 <script lang="ts">
+  import Checkbox from "@smui/checkbox";
+  import { Item, Graphic, Meta, Label } from "@smui/list";
+
   import type { TodoItemData } from "./types";
+  import { createEventDispatcher } from "svelte";
 
   export let todo: TodoItemData;
+  const dispatch = createEventDispatcher();
 
   const handleToggle = () => {
     todo = { ...todo, completed: !todo.completed };
@@ -16,7 +21,22 @@
   };
 </script>
 
-<div on:click={handleToggle}>
-  <input type="checkbox" checked={todo.completed} />
-  {todo.title}
-</div>
+<Item on:click={handleToggle}>
+  <Checkbox checked={todo.completed} />
+  <Label>{todo.title}</Label>
+  <Meta>
+    <span on:click|stopPropagation={() => dispatch("deleted", { id: todo.id })}>
+      <Graphic class="material-icons">delete</Graphic>
+    </span>
+  </Meta>
+</Item>
+
+<style>
+  :global(.material-icons) {
+    color: #b71c1c;
+  }
+
+  :global(.material-icons):hover {
+    color: #921616;
+  }
+</style>
