@@ -23,7 +23,9 @@
 
 <Item on:click={handleToggle}>
   <Checkbox checked={todo.completed} />
-  <Label>{todo.title}</Label>
+  <span class:completed={todo.completed}>
+    <Label>{todo.title}</Label>
+  </span>
   <Meta>
     <span on:click|stopPropagation={() => dispatch("deleted", { id: todo.id })}>
       <Graphic class="material-icons">delete</Graphic>
@@ -32,6 +34,10 @@
 </Item>
 
 <style>
+  .completed {
+    text-decoration: line-through;
+  }
+
   :global(.material-icons) {
     color: #b71c1c;
   }

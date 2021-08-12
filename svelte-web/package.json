@@ -9,6 +9,7 @@
   "devDependencies": {
     "@smui/checkbox": "^4.2.0",
     "@smui/list": "^4.2.0",
+    "@smui/textfield": "^4.2.0",
     "@tsconfig/svelte": "^1.0.10",
     "@types/node": "^14.11.1",
     "cross-env": "^7.0.3",

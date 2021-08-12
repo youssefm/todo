@@ -11,11 +11,10 @@
   h1 {
     font-family: Roboto, sans-serif;
     font-weight: 300;
-    font-size: 6rem;
-    line-height: 6rem;
+    font-size: 4rem;
+    line-height: 4rem;
     letter-spacing: -0.015625em;
     margin: 20px;
     text-align: center;
-    -webkit-font-smoothing: antialiased;
   }
 </style>
