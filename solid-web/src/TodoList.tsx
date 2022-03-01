@@ -11,7 +11,7 @@ const TodoList: Component = () => {
     setTodos(await fetchTyped<TodoItemData[]>("api/todo"));
   });
 
-  const onNewTodoItemSubmit = async (event) => {
+  const onNewTodoItemSubmit = async (event: Event) => {
     event.preventDefault();
 
     const response = await fetch("/api/todo", {
@@ -26,7 +26,7 @@ const TodoList: Component = () => {
     setTodos([...todos(), newTodo]);
   };
 
-  const onDelete = async (id) => {
+  const onDelete = async (id: number) => {
     setTodos(todos().filter((item) => item.id != id));
     fetch(`/api/todo/${id}`, { method: "DELETE" });
   };
