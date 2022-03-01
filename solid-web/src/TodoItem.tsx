@@ -26,7 +26,7 @@ const TodoItem: Component<Props> = ({ item, onDelete }) => {
 
   return (
     <div class="flex w-52 items-center">
-      <label class="grow">
+      <label class="grow cursor-pointer">
         <input
           type="checkbox"
           checked={isCompleted()}

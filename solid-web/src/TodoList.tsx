@@ -1,15 +1,14 @@
 import { Component, createEffect, createSignal, For } from "solid-js";
-import { createStore, produce } from "solid-js/store";
 import TodoItem from "./TodoItem";
 import { TodoItemData } from "./types";
 import { fetchTyped } from "./util";
 
 const TodoList: Component = () => {
-  const [store, setStore] = createStore({ todos: [] });
+  const [todos, setTodos] = createSignal([]);
   const [newItemTitle, setNewItemTitle] = createSignal("");
 
   createEffect(async () => {
-    setStore({ todos: await fetchTyped<TodoItemData[]>("api/todo") });
+    setTodos(await fetchTyped<TodoItemData[]>("api/todo"));
   });
 
   const onNewTodoItemSubmit = async (event) => {
@@ -24,14 +23,11 @@ const TodoList: Component = () => {
     });
     const newTodo = await response.json();
     setNewItemTitle("");
-    setStore("todos", [...store.todos, newTodo]);
+    setTodos([...todos(), newTodo]);
   };
 
   const onDelete = async (id) => {
-    setStore(
-      "todos",
-      store.todos.filter((item) => item.id != id)
-    );
+    setTodos(todos().filter((item) => item.id != id));
     fetch(`/api/todo/${id}`, { method: "DELETE" });
   };
 
@@ -44,7 +40,7 @@ const TodoList: Component = () => {
           class="border border-neutral-400"
         />
       </form>
-      <For each={store.todos}>
+      <For each={todos()}>
         {(item) => <TodoItem item={item} onDelete={() => onDelete(item.id)} />}
       </For>
     </div>
