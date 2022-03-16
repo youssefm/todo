@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from flask import Flask, jsonify, request, Response
 
 app = Flask("api")
@@ -27,14 +28,19 @@ def new_todo():
 
 @app.route("/api/todo/<id>", methods=["PUT"])
 def update_todo(id):
-    updated = request.get_json()
-    assert str(updated["id"]) == id
-    global TODOS
-    TODOS = sorted(
-        [todo for todo in TODOS if str(todo["id"]) != id] + [updated],
-        key=lambda t: t["id"],
-    )
-    return Response()
+    found_index = None
+    for index, todo in enumerate(TODOS):
+        if str(todo["id"]) == id:
+            found_index = index
+            break
+
+    if found_index is None:
+        return Response(status=HTTPStatus.NOT_FOUND)
+    else:
+        updated = request.get_json()
+        assert str(updated["id"]) == id
+        TODOS[found_index] = updated
+        return Response()
 
 
 @app.route("/api/todo/<id>", methods=["DELETE"])
@@ -45,10 +51,11 @@ def delete_todo(id):
             found_index = index
             break
 
-    if found_index is not None:
+    if found_index is None:
+        return Response(status=HTTPStatus.NOT_FOUND)
+    else:
         del TODOS[found_index]
-
-    return Response()
+        return Response()
 
 
 if __name__ == "__main__":
